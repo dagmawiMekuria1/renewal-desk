@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renewal Desk</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="app-header__inner">
+      <div class="app-header__brand">
+        <svg width="22" height="26" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M11 1L1 5V12C1 18.075 5.233 23.657 11 25C16.767 23.657 21 18.075 21 12V5L11 1Z"
+                stroke="rgba(255,255,255,0.9)" stroke-width="1.5" fill="rgba(255,255,255,0.1)"/>
+          <path d="M7 13L10 16L15 10" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <h1 class="app-header__title">Renewal Desk</h1>
+      </div>
+      <div class="app-header__counter" id="renewal-counter" aria-live="polite" aria-label="Renewal counter">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M6.134 2.533c.378-.678 1.354-.678 1.732 0l4.541 8.15C12.794 11.37 12.28 12.25 11.54 12.25H2.46c-.74 0-1.254-.88-.866-1.567l4.54-8.15z"
+                fill="#E65100"/>
+          <rect x="6.5" y="5.5" width="1" height="3" rx="0.5" fill="white"/>
+          <circle cx="7" cy="10" r="0.5" fill="white"/>
+        </svg>
+        <span class="counter__number" id="counter-number">0</span>
+        <span class="counter__text">renewals due within 30 days</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <section id="add-policy-section" class="card">
+      <div class="section-label">Add New Policy</div>
+      <form id="add-policy-form" class="add-form" novalidate>
+        <div class="form-field">
+          <label for="input-client-name">Client Name</label>
+          <input type="text" id="input-client-name" name="clientName" placeholder="e.g. Acme Corp Ltd" maxlength="120" required>
+          <span class="form-error" id="error-client-name">Client name is required</span>
+        </div>
+        <div class="form-field">
+          <label for="input-policy-number">Policy Number</label>
+          <input type="text" id="input-policy-number" name="policyNumber" placeholder="e.g. POL-2024-001234" maxlength="30" required>
+          <span class="form-error" id="error-policy-number">Policy number is required</span>
+        </div>
+        <div class="form-field">
+          <label for="input-renewal-date">Renewal Date</label>
+          <input type="date" id="input-renewal-date" name="renewalDate" required>
+          <span class="form-error" id="error-renewal-date">Renewal date is required</span>
+        </div>
+        <div class="form-field">
+          <label for="input-handler">Handler</label>
+          <input type="text" id="input-handler" name="handler" placeholder="e.g. Sarah Chen" maxlength="80" required>
+          <span class="form-error" id="error-handler">Handler name is required</span>
+        </div>
+        <div class="form-field form-field--button">
+          <button type="submit" class="btn-primary" id="btn-add-policy">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Add Policy
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <section id="search-section" class="search-bar">
+      <div class="search-input-wrapper">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="7" cy="7" r="5" stroke="#8B95A1" stroke-width="1.5" fill="none"/>
+          <path d="M11 11L14 14" stroke="#8B95A1" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search by client name..." aria-label="Search policies by client name">
+      </div>
+      <span class="search-result-count" id="search-result-count">Showing 0 of 0</span>
+    </section>
+
+    <section id="policy-list-section" aria-live="polite" aria-label="Policy list">
+
+      <div class="table-container" id="policy-table-container">
+        <table class="policy-table" id="policy-table">
+          <thead>
+            <tr>
+              <th class="col-client">Client Name</th>
+              <th class="col-policy">Policy #</th>
+              <th class="col-date">Renewal Date</th>
+              <th class="col-handler">Handler</th>
+              <th class="col-status">Status</th>
+            </tr>
+          </thead>
+          <tbody id="policy-table-body">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="policy-cards" id="policy-cards-container">
+      </div>
+
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="10" y="6" width="28" height="36" rx="3" stroke="#D0D7DE" stroke-width="2" fill="none"/>
+          <path d="M17 18h14M17 24h10M17 30h8" stroke="#D0D7DE" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p class="empty-state__title">No policies match your search</p>
+        <p class="empty-state__subtitle">Try a different client name</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>&copy; 2025 Renewal Desk</p>
+  </footer>
+
+  <script src="assets/site.js" defer></script>
+</body>
+</html>
